@@ -1,0 +1,164 @@
+﻿<UserControl x:Class="SlamDunkApp.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1200"
+             Background="White">
+
+    <UserControl.Resources>
+        <Style x:Key="DashboardGridStyle" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="#FFF5F5F5"/>
+            <Setter Property="AlternatingRowBackground" Value="#FFEEEEEE"/>
+            <Setter Property="RowBackground" Value="#FFF5F5F5"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#DDD"/>
+            <Setter Property="RowHeight" Value="35"/>
+            <Setter Property="ColumnWidth" Value="*"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="#FFF7C13C" CornerRadius="20" Padding="15" Margin="0,0,10,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBlock Text="📊 Statistiques" HorizontalAlignment="Center" Foreground="White" FontWeight="Bold" FontSize="22" Margin="0,5,0,30"/>
+
+                        <Border Background="White" CornerRadius="10" Padding="15" Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="👥 Clients" FontSize="14" FontWeight="SemiBold" Foreground="#666"/>
+                                <TextBlock x:Name="TxtNbClients" Text="0" FontSize="32" FontWeight="Bold" Foreground="#F7C13C" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="White" CornerRadius="10" Padding="15" Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="📦 Produits" FontSize="14" FontWeight="SemiBold" Foreground="#666"/>
+                                <TextBlock x:Name="TxtNbProduits" Text="0" FontSize="32" FontWeight="Bold" Foreground="#F7C13C" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="White" CornerRadius="10" Padding="15" Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="🎯 Prospects" FontSize="14" FontWeight="SemiBold" Foreground="#666"/>
+                                <TextBlock x:Name="TxtNbProspects" Text="0" FontSize="32" FontWeight="Bold" Foreground="#F7C13C" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Background="White" CornerRadius="10" Padding="15">
+                            <StackPanel>
+                                <TextBlock Text="📅 RDV" FontSize="14" FontWeight="SemiBold" Foreground="#666"/>
+                                <TextBlock x:Name="TxtNbRendezVous" Text="0" FontSize="32" FontWeight="Bold" Foreground="#F7C13C" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <Button x:Name="BtnExportPDF" Grid.Row="1" Content="📄 Exporter Bilan PDF" 
+                        Height="45" Margin="0,20,0,0"
+                        Background="#FFED2F36" Foreground="White" FontWeight="Bold" FontSize="14"
+                        Cursor="Hand" Click="BtnExportPDF_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="10">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="#999" BlurRadius="5" ShadowDepth="1" Opacity="0.5"/>
+                                </Border.Effect>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1.5*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="📈 Évolution des Clients" Foreground="#FFED2F36" FontWeight="Bold" FontSize="18" Margin="10,0,0,5"/>
+
+            <Border Grid.Row="1" Background="#FFF5F5F5" CornerRadius="15" Padding="10" Margin="5">
+                <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Mois" Labels="{Binding Labels}"/>
+                    </lvc:CartesianChart.AxisX>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis Title="Nombre de clients" MinValue="0"/>
+                    </lvc:CartesianChart.AxisY>
+                </lvc:CartesianChart>
+            </Border>
+
+            <Grid Grid.Row="2" Margin="5,15,5,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="🎯 Prospects futurs" Foreground="#FFED2F36" FontWeight="Bold" FontSize="16"/>
+                <TextBlock Grid.Column="1" Text="📅 Rendez-vous à venir" Foreground="#FFED2F36" FontWeight="Bold" FontSize="16" Margin="10,0,0,0"/>
+                <TextBlock Grid.Column="2" Text="📦 Stock Faible" Foreground="#FFED2F36" FontWeight="Bold" FontSize="16" Margin="10,0,0,0"/>
+            </Grid>
+
+            <Grid Grid.Row="3" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="#FFF5F5F5" CornerRadius="10" Padding="5" Margin="0,0,5,0">
+                    <DataGrid x:Name="DataGridProspects" Style="{StaticResource DashboardGridStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
+                            <DataGridTextColumn Header="Prénom" Binding="{Binding Prenom}"/>
+                            <DataGridTextColumn Header="Entreprise" Binding="{Binding Entreprise}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+
+                <Border Grid.Column="1" Background="#FFF5F5F5" CornerRadius="10" Padding="5" Margin="5,0,5,0">
+                    <DataGrid x:Name="DataGridRdv" Style="{StaticResource DashboardGridStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Date" Binding="{Binding DateHeure, StringFormat={}{0:dd/MM HH:mm}}"/>
+                            <DataGridTextColumn Header="Lieu" Binding="{Binding Lieu}"/>
+                            <DataGridTextColumn Header="Client #" Binding="{Binding IdClient}" Width="Auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+
+                <Border Grid.Column="2" Background="#FFF5F5F5" CornerRadius="10" Padding="5" Margin="5,0,0,0">
+                    <DataGrid x:Name="DataGridProduitsDashboard" Style="{StaticResource DashboardGridStyle}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Nom" Binding="{Binding Nom}"/>
+                            <DataGridTextColumn Header="Prix" Binding="{Binding Prix, StringFormat={}{0:C}}" Width="Auto"/>
+                            <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="Auto" FontWeight="Bold" Foreground="Red"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
