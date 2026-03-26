@@ -79,7 +79,7 @@ namespace InfoTools.Tests
             string resultat = client.NomComplet;
 
             // ASSERT : On vérifie que le nom est en majuscule et l'entreprise entre parenthèses
-            Assert.AreEqual("DUPONT Jean (Info-Tools SA)", resultat, "Erreur : Le formatage du nom complet est incorrect.");
+            Assert.AreEqual("👤 [CLIENT] DUPONT Jean (Info-Tools SA)", client.NomComplet, "Le formatage du nom complet est incorrect.");
         }
 
         // ==========================================
